@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARIS</title>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>    
+    <section class="tabs">
+        <a href="index.html"><b style="color: blue; font-weight: bolder; padding: 1%; border-radius: 7px; font-size: 18px; border: none; border-bottom: solid rgb(110, 110, 255) 5px; float: right;">Home</b></a>
+        <div class="container">
+            <div id="tab-1" class="tab-item tab-border">
+                <i  id="finish" class="fas fa-door-open fa-3x"><h1>TARIS Records</h1></i>
+                <!-- <p class="hide-sm"></p> -->
+            </div>
+        </div>
+    </section><br>
+        <section id="records">
+            <table id="recordTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Vehicles</th>
+                        <th>Injuries</th>
+                        <th>Fatalities</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Records will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </section> 
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+    // Retrieve the records from localStorage
+    const records = JSON.parse(localStorage.getItem('accidentRecords')) || [];
+    const tableBody = document.getElementById('recordTable').getElementsByTagName('tbody')[0];
+
+    records.forEach(record => {
+        // Create a new table row
+        const newRow = tableBody.insertRow();
+
+        // Insert cells into the new row
+        newRow.insertCell(0).innerText = record.date;
+        newRow.insertCell(1).innerText = record.location;
+        newRow.insertCell(2).innerText = record.vehicles;
+        newRow.insertCell(3).innerText = record.injuries;
+        newRow.insertCell(4).innerText = record.fatalities;
+        newRow.insertCell(5).innerText = record.description;
+
+        // Create delete button
+        const deleteBtn = document.createElement('span');
+        deleteBtn.classList.add('action-btn');
+        deleteBtn.innerText = 'Delete';
+        deleteBtn.onclick = function() {
+            deleteRecord(record.id);
+        };
+
+        newRow.insertCell(6).appendChild(deleteBtn);
+    });
+});
+
+function deleteRecord(id) {
+    // Retrieve the records from localStorage
+    let records = JSON.parse(localStorage.getItem('accidentRecords')) || [];
+
+    // Filter out the record to be deleted
+    records = records.filter(record => record.id !== id);
+
+    // Update localStorage with the remaining records
+    localStorage.setItem('accidentRecords', JSON.stringify(records));
+
+    // Reload the page to update the table
+    location.reload();
+}
+
+        </script>
+</body>
+</html>

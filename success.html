@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARIS</title>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header class="showcase">
+        <div class="showcase-content">
+            <h1>TARIS</h1>
+            <p>Traffic Accident Reported Successfully</p>
+            <a href="records.html" class="btn btn-xl">Finish <i class="fas fa-chevron-right btn-icon"></i></a>
+        </div>
+    </header>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+    // Retrieve the records from localStorage
+    const records = JSON.parse(localStorage.getItem('accidentRecords')) || [];
+    const tableBody = document.getElementById('recordTable').getElementsByTagName('tbody')[0];
+
+    records.forEach(record => {
+        // Create a new table row
+        const newRow = tableBody.insertRow();
+
+        // Insert cells into the new row
+        newRow.insertCell(0).innerText = record.date;
+        newRow.insertCell(1).innerText = record.location;
+        newRow.insertCell(2).innerText = record.vehicles;
+        newRow.insertCell(3).innerText = record.injuries;
+        newRow.insertCell(4).innerText = record.fatalities;
+        newRow.insertCell(5).innerText = record.description;
+
+        // Create delete button
+        const deleteBtn = document.createElement('span');
+        deleteBtn.classList.add('action-btn');
+        deleteBtn.innerText = 'Delete';
+        deleteBtn.onclick = function() {
+            deleteRecord(record.id);
+        };
+
+        newRow.insertCell(6).appendChild(deleteBtn);
+    });
+});
+
+function deleteRecord(id) {
+    // Retrieve the records from localStorage
+    let records = JSON.parse(localStorage.getItem('accidentRecords')) || [];
+
+    // Filter out the record to be deleted
+    records = records.filter(record => record.id !== id);
+
+    // Update localStorage with the remaining records
+    localStorage.setItem('accidentRecords', JSON.stringify(records));
+
+    // Reload the page to update the table
+    location.reload();
+}
+
+        </script>
+</body>
+</html>
